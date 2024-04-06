@@ -1,9 +1,4 @@
-export interface Users {
-  results: Result[];
-  info: Info;
-}
-
-export interface Result {
+export interface User {
   gender: string;
   name: Name;
   location: Location;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Stack } from "expo-router";
-import { Result, Users } from "../types";
+import { User } from "../types";
 import {
   ActivityIndicator,
   FlatList,
@@ -14,7 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const [isLoading, setIsLoading] = useState(true);
-  const [users, setUsers] = useState<Result[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchUsers = async () => {
@@ -23,7 +23,7 @@ export default function HomeScreen() {
       const data = await res.json();
       setUsers(data.results);
     } catch (error) {
-      console.log(error);
+      alert("An error occurred while fetching users");
     } finally {
       setIsLoading(false);
       setRefreshing(false); // Stop the refreshing indicator
