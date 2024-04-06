@@ -9,17 +9,16 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function RootLayout() {
   return (
-    <ThemeProvider value={DefaultTheme}>
-      <Stack
-        screenOptions={{
-          headerTransparent: true,
-          headerShadowVisible: false,
-          headerStyle: {
-            backgroundColor: "transparent", // Set background color of header
-          },
-        }}
-      />
-      <StatusBar style="light" />
-    </ThemeProvider>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ThemeProvider value={DefaultTheme}>
+        <Stack
+          screenOptions={{
+            headerTransparent: false,
+            headerShadowVisible: false,
+          }}
+        />
+        <StatusBar style="light" />
+      </ThemeProvider>
+    </SafeAreaView>
   );
 }

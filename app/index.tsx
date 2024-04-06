@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Stack } from "expo-router";
+import { Link, Stack } from "expo-router";
 import { User } from "../types";
+import { Ionicons } from "@expo/vector-icons";
 import {
   ActivityIndicator,
   FlatList,
   View,
-  Text,
-  Image,
   RefreshControl,
   StyleSheet,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import UserListItem from "../components/UserListItem";
 
 export default function HomeScreen() {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,46 +39,46 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <>
       <Stack.Screen
         options={{
           title: "",
+
+          headerTintColor: "black",
           headerStyle: {
-            backgroundColor: "transparent",
+            // backgroundColor: "transparent",
           },
+          headerLeft: () => (
+            <Link href="/profile">
+              <Ionicons name="person-outline" size={24} color="black" />
+            </Link>
+          ),
+          headerRight: () => (
+            <Link href="/settings">
+              <Ionicons name="settings-outline" size={24} color="black" />
+            </Link>
+          ),
         }}
       />
-
-      {isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <View style={styles.contentContainer}>
-          <FlatList
-            data={users}
-            contentContainerStyle={styles.flatListContent}
-            keyExtractor={(item) => item.login.uuid}
-            showsVerticalScrollIndicator={false}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            renderItem={({ item }) => (
-              <View style={styles.itemContainer}>
-                <Image
-                  source={{ uri: item.picture.thumbnail }}
-                  style={styles.thumbnail}
-                />
-                <View style={styles.textContainer}>
-                  <Text style={styles.nameText}>
-                    {item.name.first} {item.name.last}
-                  </Text>
-                  <Text style={styles.emailText}>{item.email}</Text>
-                </View>
-              </View>
-            )}
-          />
-        </View>
-      )}
-    </SafeAreaView>
+      <View style={styles.container}>
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <View style={styles.contentContainer}>
+            <FlatList
+              data={users}
+              contentContainerStyle={styles.flatListContent}
+              keyExtractor={(item) => item.login.uuid}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+              renderItem={({ item }) => <UserListItem user={item} />}
+            />
+          </View>
+        )}
+      </View>
+    </>
   );
 }
 
@@ -87,6 +86,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
+    backgroundColor: "white",
   },
   contentContainer: {
     flex: 1,
@@ -94,24 +94,5 @@ const styles = StyleSheet.create({
   flatListContent: {
     gap: 10,
     padding: 20,
-  },
-  itemContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-  thumbnail: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
-  textContainer: {
-    flex: 1,
-  },
-  nameText: {
-    fontWeight: "bold",
-  },
-  emailText: {
-    color: "gray",
   },
 });
